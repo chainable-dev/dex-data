@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import requests
 
+
 def fetch_data(api_url):
     try:
         response = requests.get(api_url)
@@ -11,6 +12,8 @@ def fetch_data(api_url):
     except requests.exceptions.RequestException as e:
         st.error(f"Error fetching data from DeFi Llama: {e}")
         return None
+
+
 def fetch_historical_data(pool_id):
     url = f"https://yields.llama.fi/chart/{pool_id}"
     try:
@@ -20,10 +23,13 @@ def fetch_historical_data(pool_id):
     except requests.exceptions.RequestException as e:
         st.error(f"Error fetching historical data for pool {pool_id}: {e}")
         return None
+
+
 # API Endpoints
 PROTOCOLS_API_URL = "https://api.llama.fi/protocols"
 CHAINS_API_URL = "https://api.llama.fi/chains"
 TVL_BY_CATEGORY_API_URL = "https://api.llama.fi/charts"
+
 
 def load_data():
     chains_data = fetch_data(CHAINS_API_URL)
@@ -43,6 +49,7 @@ def load_data():
     if yields_data:
         yields_df = pd.DataFrame(yields_data)
         st.session_state['yields_df'] = yields_df
+
 
 def overview_page():
     st.title("DEX Tracker Overview")
@@ -129,6 +136,7 @@ def protocols_page():
         )
         st.plotly_chart(fig)
 
+
 def yields_page():
     st.title("DeFi Yields")
 
@@ -160,6 +168,7 @@ def yields_page():
         else:
             st.write(f"No data available for {selected_coin}")
 
+
 def tvl_by_category_page():
     st.title("TVL by Category")
 
@@ -189,6 +198,7 @@ def tvl_by_category_page():
                 labels={'tvl': 'Total Value Locked (USD)', 'category': 'Category'},
             )
             st.plotly_chart(fig)
+
 
 def historical_data_page():
     st.title("Historical APY and TVL Data")
@@ -222,6 +232,8 @@ def historical_data_page():
                 title=f'Historical TVL and APY for Pool {selected_pool}'
             )
             st.plotly_chart(fig)
+
+
 # Main page navigation
 def main():
     st.sidebar.title("Navigation")
